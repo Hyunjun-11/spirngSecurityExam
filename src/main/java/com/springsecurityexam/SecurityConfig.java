@@ -15,16 +15,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth ->auth.anyRequest().authenticated())
                 .formLogin(form->form
                         //사용자 정의 로그인 페이지로 전환, 기본페이지 무시
-//                        .loginPage("/loginPage")
+                        .loginPage("/loginPage")
                         //사용자 이름과 비밀번호를 검증할 URL지정(Form action)
                         .loginProcessingUrl("/loginProc")
                         //로그인 성공 이후 이동페이지, alwaysUse가 true이면 무조건 지정된위치로 이동(기본은false)
@@ -40,18 +37,20 @@ public class SecurityConfig {
 
                         //인증 성공시 사용할 AuthenticationSuccessHandler를 지정
                         //기본값은 SavedRequestAwareAuthenticationSuccessHandler
-//                        .successHandler((request, response, authentication) -> {
-//                            System.out.println("authentication : " + authentication);
-//                            response.sendRedirect("/home");
-//
-//                        })
+                        //성공했을시 defaultSuccessUrl 보다 우선시 작동한다
+                        .successHandler((request, response, authentication) -> {
+                            System.out.println("authentication : " + authentication);
+                            response.sendRedirect("/home");
+
+                        })
                         //인증실패시 사용할 AuthenticationFailureHandler를 지정
                         //기본값은 SimpleUrlAuthenticationFailureHandler를 사용하여 "login?error"로 리다이렉션
-//                        .failureHandler((request, response, exception) -> {
-//                            System.out.println("exception : " + exception.getMessage());
-//                            response.sendRedirect("/login");
-//
-//                        })
+                        //실패했을시 failureUrl 보다 우선시 작동한다.
+                        .failureHandler((request, response, exception) -> {
+                            System.out.println("exception : " + exception.getMessage());
+                            response.sendRedirect("/login");
+
+                        })
                         .permitAll()
                 );
         return http.build();
