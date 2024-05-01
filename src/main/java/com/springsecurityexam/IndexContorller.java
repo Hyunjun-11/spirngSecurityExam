@@ -19,4 +19,9 @@ public class IndexContorller {
     public String loginPage() {
         return "loginPage";
     }
+
+    @GetMapping("/logoutSuccess")
+    public String logoutSuccess() {
+        return "logoutSuccess";
+    }
 }
