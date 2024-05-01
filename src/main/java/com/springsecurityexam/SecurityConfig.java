@@ -27,16 +27,16 @@ public class SecurityConfig {
                         .requestMatchers("/anonymousContext", "/authentiaction")
                         .hasRole("GUEST")
 
-
                         .anyRequest()
                         .authenticated()
                 )
+
                 .formLogin(Customizer.withDefaults())
+
+
                 .anonymous(anonymous ->anonymous
                         .principal("guest")
                         .authorities("ROLE_GUEST")
-
-
                 )
                 ;
 
