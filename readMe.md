@@ -26,5 +26,49 @@
      * RememberMeServices(RememberMeServices.loginFail) 호출
      * AuthenticationFailureHandler 인증실패 핸들러를 호출한다.
 
+```java
+// AbstractAuthenticationProcessingFilter 클래스의
+public abstract class AbstractAuthenticationProcessingFilter extends GenericFilterBean implements ApplicationEventPublisherAware, MessageSourceAware {
+    private void doFilter() {
+        //requestMatcher 검사
+        if (!this.requiresAuthentication(request, response)) {
+            chain.doFilter(request, response);
+        }
+       //attemptAuthentication 메서드 재 정의
+       //과정중에 U.N.T 생성 인증처리
+       //아래과정중 성공시 authenticationResult 에 인증객체가 담긴다(userDetail_principal)
+       Authentication authenticationResult = this.attemptAuthentication(request, response);
+       //세션에저장
+       this.sessionStrategy.onAuthentication(authenticationResult, request, response);
+       this.successfulAuthentication(request, response, chain, authenticationResult);
+
+    }
+
+   protected void successfulAuthentication(){
+      SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
+      context.setAuthentication(authResult);
+      this.securityContextHolderStrategy.setContext(context);
+      //세션에저장(setContextInSession)
+      this.securityContextRepository.saveContext(context, request, response);
+      this.successHandler.onAuthenticationSuccess(request, response, authResult);
+}
+
+
+
+public class UsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+   // 
+   public Authentication attemptAuthentication() {
+       //사용자 정보를 가져와 Token 에 저장한다.
+      UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
+       //getAuthenticationManager 에게 인증처리를 요청
+      return this.getAuthenticationManager().authenticate(authRequest);
+   }
+   
+    
+}
+
+
+
+```
 
 
