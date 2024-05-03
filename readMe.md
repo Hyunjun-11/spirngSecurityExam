@@ -1,5 +1,5 @@
 # [SpringSecurity Study]
-## Authentication
+# Authentication
 
 * Authentication - 사용자 인증 정보를 저장하는 토큰 개념의 객체로 활용되며 인증이후 SecurityContext 에저장되어 전역적으로 참조가 가능하다.
   * getPrincipal - 인증주체 
@@ -51,7 +51,7 @@ public class UsernamePasswordAuthenticationFilter{
 }
 
 ```
-## SecurityContext
+# SecurityContext
 * 인증된 사용자의 Authentication 객체 저장
 * ThreadLocal 저장소 사용
   * SecurityContextHolder 를 통해 접근 각 스레드가 자신만의 보안컨텍스트를 유지한다.
@@ -60,7 +60,7 @@ public class UsernamePasswordAuthenticationFilter{
   * 참조 - SecurityContextHolder.getContextHolderStrategy().getContext
   * 삭제 - SecurityContextHolder.getContextHolderStrategy().clearContext
 
-## SecurityContextHolder
+# SecurityContextHolder
 * SecurityContext 객체를 저장한다.
 * 전략패턴을 사용한다
  ```java
@@ -81,7 +81,18 @@ public class SecurityContextHolder {
 * MODE_GLOBAL - 전역적으로 단일 보안컨텍스트를 사용하며 서버환경에서는 부적합. 간단한 애플리케이션에 적합
 
 
-AuthenticationManager\
+# AuthenticationManager
+* AuthenticationManager 는 Authentication 객체를 만든다.
+* AuthenticationManager 는 여러 AuthenticationProvider 들을 관리하며 목록을 순차적으로 순회하며 인증요청 처리를 한다.
+* AuthenticationProvider 목록중 인증처리 요건에 맞는 적절한 Provider 를 찾아 위임한다.
+### AuthenticationManagerBuilder 
+ - AuthenticationManagerBuilder 를 이용하며 Provider 를 추가할수있다
+ - HttpSecurity.getSharedObject(AuthenticationManagerBuilder.class) 를 통해 객체를 참조할수 있다.
+ - 
+
+
+
+
 AuthenticationProvider\
 UserDetailsService\
 UserDetails\
