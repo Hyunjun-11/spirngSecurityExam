@@ -82,7 +82,6 @@ public class SecurityContextHolder {
 
 
 # AuthenticationManager
-* AuthenticationManager 는 Authentication 객체를 만든다.
 * AuthenticationManager 는 여러 AuthenticationProvider 들을 관리하며 목록을 순차적으로 순회하며 인증요청 처리를 한다.
 * AuthenticationProvider 목록중 인증처리 요건에 맞는 적절한 Provider 를 찾아 위임한다.
 ### AuthenticationManagerBuilder 
