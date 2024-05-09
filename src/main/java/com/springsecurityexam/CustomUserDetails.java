@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    private  AccountDTO accountDTO;
+    private final AccountDTO accountDTO;
 
     public CustomUserDetails(AccountDTO accountDTO) {
         this.accountDTO = accountDTO;
